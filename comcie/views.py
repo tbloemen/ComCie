@@ -2,9 +2,9 @@ from email import message
 from typing import *
 from django.utils.timezone import datetime
 from django.shortcuts import redirect, render
-from hello.forms import LogMessageForm
+from comcie.forms import LogMessageForm
 from django.views.generic import ListView
-from hello.models import LogMessage
+from comcie.models import LogMessage
 
 # Create your views here.
 
@@ -21,7 +21,7 @@ class HomeListView(ListView):
 def hello_there(request, name):
     return render(
         request,
-        'hello/hello_there.html',
+        'comcie/hello_there.html',
         {
             'name': name,
             'date': datetime.now(),
@@ -30,11 +30,11 @@ def hello_there(request, name):
 
 
 def about(request):
-    return render(request, "hello/about.html")
+    return render(request, "comcie/about.html")
 
 
 def contact(request):
-    return render(request, "hello/contact.html")
+    return render(request, "comcie/contact.html")
 
 
 def log_message(request):
@@ -49,7 +49,7 @@ def log_message(request):
     else:
         return render(
             request,
-            "hello/log_message.html",
+            "comcie/log_message.html",
             {
                 'form': form
             }
