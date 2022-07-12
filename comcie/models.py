@@ -1,6 +1,3 @@
-import email
-from tkinter import CASCADE
-from unicodedata import name
 from django.db import models
 from django.utils import timezone
 
@@ -18,16 +15,16 @@ class LogMessage(models.Model):
 
 
 class Role(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=50)
 
     def __str__(self) -> str:
         return self.name
 
 
 class Person(models.Model):
-    name = models.CharField()
-    email = models.CharField(blank=True)
-    tel = models.CharField(blank=True)
+    name = models.CharField(max_length=200)
+    email = models.CharField(blank=True, max_length=100)
+    tel = models.CharField(blank=True, max_length=20)
     roles: models.ManyToManyField = models.ManyToManyField(Role)
 
     def __str__(self):
@@ -35,7 +32,7 @@ class Person(models.Model):
 
 
 class Instrument(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=50)
 
     def __str__(self) -> str:
         return self.name
@@ -62,12 +59,12 @@ class Combo(models.Model):
         max_length=4, choices=COMBO_TYPES, default='GrCo')
     is_active = models.BooleanField(default=True)
     contact = models.ManyToManyField(Person)
-    email = models.CharField()
-    tel = models.CharField()
-    musicians = models.ManyToManyField(Musician)
-    price = models.CharField()
-    style = models.CharField()
-    demos = models.CharField()
+    email = models.CharField(max_length=100)
+    tel = models.CharField(max_length=20)
+    musicians = models.ManyToManyField(Musician, related_name="musician")
+    price = models.CharField(max_length=100)
+    style = models.CharField(max_length=300)
+    demos = models.CharField(max_length=300)
 
     def __str__(self) -> str:
         return self.name
@@ -98,18 +95,18 @@ class Gig(models.Model):
     ]
 
     date = models.DateField(blank=True, null=True)
-    name = models.CharField()
-    last_updated = models.DateTimeField(default=timezone.now())
+    name = models.CharField(max_length=100)
+    last_updated = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=3, choices=GIG_STATUS, default="US")
-    handler: Person = models.ForeignKey(Person, on_delete=models.CASCADE)
-    gig_type = models.CharField()
+    handler: Person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="gig_handler")
+    gig_type = models.CharField(max_length=10)
     # TODO implement gigtype enum
-    city = models.CharField()
+    city = models.CharField(max_length=100)
     length = models.IntegerField()
     starting_time = models.TimeField()
-    contact = models.ForeignKey(Person, on_delete=CASCADE)
+    contact = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="gig_contact")
     billing_credentials = models.TextField()
-    address = models.CharField()
+    address = models.CharField(max_length=100)
     gage = models.IntegerField()
     afdracht = models.IntegerField()
     instruments = models.TextField()
