@@ -1,10 +1,9 @@
-from email import message
 from typing import *
 from django.utils.timezone import datetime
 from django.shortcuts import redirect, render
-from comcie.forms import LogMessageForm
+from comcie.forms import LogMessageForm, MusicianForm
 from django.views.generic import ListView
-from comcie.models import LogMessage
+from comcie.models import LogMessage, Musician
 
 # Create your views here.
 
@@ -35,6 +34,23 @@ def about(request):
 
 def contact(request):
     return render(request, "comcie/contact.html")
+
+
+def log_musician(request):
+    form = MusicianForm(request.POST or None)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save(commit=True)
+
+    table = Musician.objects.all()
+
+    return render(request, "comcie/musicians.html",
+                  {
+                      'form': form,
+                      'musician_list': table,
+                  }
+                  )
 
 
 def log_message(request):

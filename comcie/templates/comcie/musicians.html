@@ -1,0 +1,39 @@
+{% extends "comcie/layout.html" %}
+{% block title %}
+Musicians
+{% endblock %}
+{% block content %}
+<h2>Musicians</h2>
+<form method="POST" class="musician-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save btn btn-default">Add musician</button>
+</form>
+{% if musician_list %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Tel</th>
+                <th>Roles</th>
+                <th>Instruments</th>
+                <th>Registered</th>
+            </tr>
+        </thead>
+        {% for musician in musician_list %}
+            <tr>
+                <td>{{ musician.name }}</td>    
+                <td>{{ musician.email }}</td>    
+                <td>{{ musician.tel }}</td>    
+                <td>{{ musician.roles.all|dictsort:"name"|join:", " }}</td>    
+                <td>{{ musician.instrument.all|dictsort:"name"|join:", " }}</td>    
+                <td class="bool">{{ musician.is_in_artiestenverloningen }}</td>    
+            <tr>
+        {% endfor %}
+    </table>
+{% else %}
+<p>Currently there are no musicians.</p>
+{% endif %}
+
+{% endblock %}

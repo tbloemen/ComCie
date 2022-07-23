@@ -25,7 +25,7 @@ class Person(models.Model):
     name = models.CharField(max_length=200)
     email = models.CharField(blank=True, max_length=100)
     tel = models.CharField(blank=True, max_length=20)
-    roles: models.ManyToManyField = models.ManyToManyField(Role)
+    roles = models.ManyToManyField(Role, blank=True)
 
     def __str__(self):
         return self.name
@@ -98,13 +98,15 @@ class Gig(models.Model):
     name = models.CharField(max_length=100)
     last_updated = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=3, choices=GIG_STATUS, default="US")
-    handler: Person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="gig_handler")
+    handler: Person = models.ForeignKey(
+        Person, on_delete=models.CASCADE, related_name="gig_handler")
     gig_type = models.CharField(max_length=10)
     # TODO implement gigtype enum
     city = models.CharField(max_length=100)
     length = models.IntegerField()
     starting_time = models.TimeField()
-    contact = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="gig_contact")
+    contact = models.ForeignKey(
+        Person, on_delete=models.CASCADE, related_name="gig_contact")
     billing_credentials = models.TextField()
     address = models.CharField(max_length=100)
     gage = models.IntegerField()
