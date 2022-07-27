@@ -33,6 +33,10 @@ def about(request):
 def contact(request):
     return render(request, "comcie/contact.html")
 
+def musician_menu(request, name):
+    if request.method == "POST":
+        Musician.objects.filter(name=name).delete()
+        return redirect("musicians")
 
 def log_musician(request):
     form = MusicianForm(request.POST or None)
@@ -43,12 +47,10 @@ def log_musician(request):
         musician.save()
         form.save_m2m()
 
-    table = Musician.objects.all()
-
     return render(request, "comcie/musicians.html",
                   {
                       'form': form,
-                      'musician_list': table,
+                      'musician_list': Musician.objects.all(),
                   }
                   )
 

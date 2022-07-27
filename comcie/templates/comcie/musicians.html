@@ -28,7 +28,13 @@ Musicians
                 <td>{{ musician.tel }}</td>    
                 <td>{{ musician.roles.all|dictsort:"name"|join:", " }}</td>    
                 <td>{{ musician.instrument.all|dictsort:"name"|join:", " }}</td>    
-                <td class="bool">{{ musician.is_in_artiestenverloningen }}</td>    
+                <td class="bool">{{ musician.is_in_artiestenverloningen }}</td>
+                <td>
+                    <form action="{% url 'name_handler' musician.name %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>    
             <tr>
         {% endfor %}
     </table>

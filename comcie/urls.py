@@ -1,4 +1,3 @@
-from re import template
 from django.urls import path
 from comcie import views
 from comcie.models import LogMessage
@@ -15,5 +14,6 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
     path("log/", views.log_message, name="log"),
-    path("musicians/", views.log_musician, name='musicians')
+    path("musicians/", views.log_musician, name='musicians'),
+    path("musicians/<name>", views.musician_menu, name='name_handler')
 ]
