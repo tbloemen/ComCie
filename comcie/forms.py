@@ -10,3 +10,7 @@ class MusicianForm(forms.ModelForm):
     class Meta:
         model = Musician
         exclude = ()
+        widgets = {
+            'roles': forms.CheckboxSelectMultiple,
+            'instrument': forms.CheckboxSelectMultiple
+        }

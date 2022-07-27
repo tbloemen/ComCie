@@ -5,8 +5,6 @@ from comcie.forms import LogMessageForm, MusicianForm
 from django.views.generic import ListView
 from comcie.models import LogMessage, Musician
 
-# Create your views here.
-
 
 class HomeListView(ListView):
     """Renders the home page, with a list of all messages."""
@@ -39,9 +37,11 @@ def contact(request):
 def log_musician(request):
     form = MusicianForm(request.POST or None)
 
-    if request.method == "POST":
-        if form.is_valid():
-            form.save(commit=True)
+    if request.method == "POST" and form.is_valid():
+        musician = form.save(commit=False)
+        Musician.objects.filter(name=musician.name).delete()
+        musician.save()
+        form.save_m2m()
 
     table = Musician.objects.all()
 
