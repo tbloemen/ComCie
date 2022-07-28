@@ -15,5 +15,6 @@ urlpatterns = [
     path("contact/", views.contact, name="contact"),
     path("log/", views.log_message, name="log"),
     path("musicians/", views.log_musician, name='musicians'),
-    path("musicians/<name>", views.musician_menu, name='name_handler')
+    path("musicians/search_results", views.query_musicians, name="musician_search_results"),
+    path("musicians/<name>", views.musician_menu, name='name_handler'),
 ]

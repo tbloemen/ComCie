@@ -39,3 +39,16 @@ input[name=message] {
     text-align: left;
     padding-right: 15px;
 }
+
+.musician-form {
+    background-color: aqua;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.musician-form .sub {
+    flex: 1 1 150px;
+    margin: 5px;
+    background-color: lightgreen;
+}

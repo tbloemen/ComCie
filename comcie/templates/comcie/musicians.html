@@ -6,8 +6,48 @@ Musicians
 <h2>Musicians</h2>
 <form method="POST" class="musician-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.non_field_errors }}
+    <div class="sub">
+        <div class="fieldWrapper">
+            {{ form.name.errors }}
+            {{ form.name.label_tag}}
+            {{ form.name }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.email.errors }}
+            {{ form.email.label_tag}}
+            {{ form.email }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.tel.errors }}
+            {{ form.tel.label_tag}}
+            {{ form.tel }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.is_in_artiestenverloningen.errors }}
+            {{ form.is_in_artiestenverloningen.label_tag}}
+            {{ form.is_in_artiestenverloningen }}
+        </div>
+    </div>
+    <div class="sub">
+        <div class="fieldWrapper">
+            {{ form.roles.errors }}
+            {{ form.roles.label_tag}}
+            {{ form.roles }}
+        </div>
+    </div>
+    <div class="sub">
+        <div class="fieldWrapper">
+            {{ form.instrument.errors }}
+            {{ form.instrument.label_tag}}
+            {{ form.instrument }}
+        </div>
+    </div>
     <button type="submit" class="save btn btn-default">Add musician</button>
+</form>
+<form action="{% url 'musician_search_results' %}" method="get">
+    <p>The following field searches for name, roles and instruments.</p>
+    <input type="text" name="q" placeholder="Search..." id="searchInput">
 </form>
 {% if musician_list %}
     <table>

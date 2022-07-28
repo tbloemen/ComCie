@@ -1,4 +1,5 @@
 from typing import *
+from django.db.models import Q
 from django.utils.timezone import datetime
 from django.shortcuts import redirect, render
 from comcie.forms import LogMessageForm, MusicianForm
@@ -72,3 +73,17 @@ def log_message(request):
                 'form': form
             }
         )
+
+def query_musicians(request):
+    query = request.GET.get("q")
+    result = Musician.objects.filter(
+        Q(name__icontains=query) | Q(roles__name__icontains=query) | Q(instrument__name__icontains=query)
+    ).distinct()
+
+    print(Musician.objects.all())
+    print(result)
+
+    return render(request, "comcie/musicians.html", {
+        'form': MusicianForm(None),
+        'musician_list': result,
+    })
