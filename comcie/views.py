@@ -1,9 +1,11 @@
 from typing import *
+
 from django.db.models import Q
-from django.utils.timezone import datetime
 from django.shortcuts import redirect, render
-from comcie.forms import LogMessageForm, MusicianForm
+from django.utils.timezone import datetime
 from django.views.generic import ListView
+
+from comcie.forms import LogMessageForm, MusicianForm
 from comcie.models import LogMessage, Musician
 
 
@@ -34,10 +36,12 @@ def about(request):
 def contact(request):
     return render(request, "comcie/contact.html")
 
+
 def musician_menu(request, name):
     if request.method == "POST":
         Musician.objects.filter(name=name).delete()
         return redirect("musicians")
+
 
 def log_musician(request):
     form = MusicianForm(request.POST or None)
@@ -74,10 +78,12 @@ def log_message(request):
             }
         )
 
+
 def query_musicians(request):
     query = request.GET.get("q")
     result = Musician.objects.filter(
-        Q(name__icontains=query) | Q(roles__name__icontains=query) | Q(instrument__name__icontains=query)
+        Q(name__icontains=query) | Q(roles__name__icontains=query) | Q(
+            instrument__name__icontains=query)
     ).distinct()
 
     print(Musician.objects.all())

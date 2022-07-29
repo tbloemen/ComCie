@@ -1,0 +1,10 @@
+$custom-colors:(
+    "c1": #003f5c,
+    "c2": #58508d,
+    "c3": #bc5090,
+    "c4": #ff6361,
+    "c5": #ffa600,
+);
+
+@import "../../../../node_modules/bootstrap/scss/bootstrap.scss";
+$theme-colors: map-merge($theme-colors, $custom-colors);
