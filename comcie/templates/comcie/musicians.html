@@ -3,15 +3,16 @@
 Musicians
 {% endblock %}
 {% block content %}
-<h2>Musicians</h2>
+<h1>Musicians</h1>
 
+<div class="collapse" id="collapseForm">
 <form method="POST">
     {% csrf_token %}
     {% comment %} {% load myfilters %} {% endcomment %}
     {% load widget_tweaks %}
     {{ form.non_field_errors }}
-    <div class="row align-items-start">
-        <div class="col">
+    <div class="d-flex flex-wrap align-items-start">
+        <div class="m-3">
             <div class="form-floating mb-3">
                 {{ form.name.errors }}
                 {{ form.name|add_class:'form-control'|append_attr:'placeholder:John Appleseed' }}
@@ -34,7 +35,7 @@ Musicians
                     artiestenverloningen:</label>
             </div>
         </div>
-        <div class="col">
+        <div class="m-3">
             <div class="form-label">Roles:</div>
             {% for role in form.roles %}
             <div class="form-check mb-2">
@@ -42,7 +43,7 @@ Musicians
             </div>
             {% endfor %}
         </div>
-        <div class="col">
+        <div class="m-3">
             <div class="form-label">Instruments:</div>
             {% for instrument in form.instrument %}
             <div class="form-check mb-2">
@@ -51,28 +52,36 @@ Musicians
             {% endfor %}
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Add musician</button>
+    <button type="submit" class="btn btn-primary">Confirm</button>
 </form>
-
-<div class="my-3">
-    <form action="{% url 'musician_search_results' %}" method="get">
-        <input class="form-control me-2 w-25" type="text" name="q" placeholder="Search..." id="searchInput">
-        <p class="form-text">This field searches for name, roles and instruments.</p>
-    </form>
+<hr>
 </div>
 
+
+<form action="{% url 'musician_search_results' %}" method="get">
+    <div class="d-flex justify-content-between">
+        <input class="form-control me-2 mw-50" type="text" name="q" placeholder="Search..." id="searchInput">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseExample">
+            Add/update musician
+        </button> 
+    </div>
+    <p class="form-text">This field searches for name, roles and instruments.</p>           
+</form>
+
+
 {% if musician_list %}
+<div id="hiddenColumns" class="btn-group mb-3" role="group"></div>
 <div class="table-responsive">
     <table class="table table-hover table-striped">
     <thead class="table-dark">
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Telephone number</th>
-            <th scope="col">Registered</th>
-            <th scope="col">Roles</th>
-            <th scope="col">Instruments</th>
-            <th scope="col">Action</th>
+            <th scope="col"><div>Name</div></th>
+            <th scope="col"><div>Email</div></th>
+            <th scope="col"><div>Telephone number</div></th>
+            <th scope="col"><div>Registered</div></th>
+            <th scope="col"><div>Roles</div></th>
+            <th scope="col"><div>Instruments</div></th>
+            <th scope="col"><div>Action</div></th>
         </tr>
     </thead>
     {% for musician in musician_list %}
