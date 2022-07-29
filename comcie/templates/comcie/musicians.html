@@ -4,80 +4,110 @@ Musicians
 {% endblock %}
 {% block content %}
 <h2>Musicians</h2>
-<form method="POST" class="musician-form">
+
+<form method="POST">
     {% csrf_token %}
+    {% comment %} {% load myfilters %} {% endcomment %}
+    {% load widget_tweaks %}
     {{ form.non_field_errors }}
-    <div class="sub">
-        <div class="fieldWrapper">
-            {{ form.name.errors }}
-            {{ form.name.label_tag}}
-            {{ form.name }}
+    <div class="row align-items-start">
+        <div class="col">
+            <div class="form-floating mb-3">
+                {{ form.name.errors }}
+                {{ form.name|add_class:'form-control'|append_attr:'placeholder:John Appleseed' }}
+                <label for="{{ form.name.id_for_label }}" class="form-label">Name:</label>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.email.errors }}
+                {{ form.email|add_class:'form-control'|append_attr:'placeholder:john@appleseed.com' }}
+                <label for="{{ form.email.id_for_label }}" class="form-label">Email:</label>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.tel.errors }}
+                {{ form.tel|add_class:'form-control'|append_attr:'placeholder:06 12345678' }}
+                <label for="{{ form.tel.id_for_label }}" class="form-label">Telephone number:</label>
+            </div>
+            <div class="mb-3 form-check">
+                {{ form.is_in_artiestenverloningen.errors }}
+                {{ form.is_in_artiestenverloningen|add_class:'form-check-input' }}
+                <label for="{{ form.is_in_artiestenverloningen.id_for_label }}" class="form-check-label">Is in
+                    artiestenverloningen:</label>
+            </div>
         </div>
-        <div class="fieldWrapper">
-            {{ form.email.errors }}
-            {{ form.email.label_tag}}
-            {{ form.email }}
+        <div class="col">
+            <div class="form-label">Roles:</div>
+            {% for role in form.roles %}
+            <div class="form-check mb-2">
+                {{role}}
+            </div>
+            {% endfor %}
         </div>
-        <div class="fieldWrapper">
-            {{ form.tel.errors }}
-            {{ form.tel.label_tag}}
-            {{ form.tel }}
-        </div>
-        <div class="fieldWrapper">
-            {{ form.is_in_artiestenverloningen.errors }}
-            {{ form.is_in_artiestenverloningen.label_tag}}
-            {{ form.is_in_artiestenverloningen }}
+        <div class="col">
+            <div class="form-label">Instruments:</div>
+            {% for instrument in form.instrument %}
+            <div class="form-check mb-2">
+                {{instrument}}
+            </div>
+            {% endfor %}
         </div>
     </div>
-    <div class="sub">
-        <div class="fieldWrapper">
-            {{ form.roles.errors }}
-            {{ form.roles.label_tag}}
-            {{ form.roles }}
-        </div>
-    </div>
-    <div class="sub">
-        <div class="fieldWrapper">
-            {{ form.instrument.errors }}
-            {{ form.instrument.label_tag}}
-            {{ form.instrument }}
-        </div>
-    </div>
-    <button type="submit" class="save btn btn-default">Add musician</button>
+    <button type="submit" class="btn btn-primary">Add musician</button>
 </form>
-<form action="{% url 'musician_search_results' %}" method="get">
-    <p>The following field searches for name, roles and instruments.</p>
-    <input type="text" name="q" placeholder="Search..." id="searchInput">
-</form>
+
+<div class="my-3">
+    <form action="{% url 'musician_search_results' %}" method="get">
+        <input class="form-control me-2 w-25" type="text" name="q" placeholder="Search..." id="searchInput">
+        <p class="form-text">This field searches for name, roles and instruments.</p>
+    </form>
+</div>
+
 {% if musician_list %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Tel</th>
-                <th>Roles</th>
-                <th>Instruments</th>
-                <th>Registered</th>
-            </tr>
-        </thead>
-        {% for musician in musician_list %}
-            <tr>
-                <td>{{ musician.name }}</td>    
-                <td>{{ musician.email }}</td>    
-                <td>{{ musician.tel }}</td>    
-                <td>{{ musician.roles.all|dictsort:"name"|join:", " }}</td>    
-                <td>{{ musician.instrument.all|dictsort:"name"|join:", " }}</td>    
-                <td class="bool">{{ musician.is_in_artiestenverloningen }}</td>
-                <td>
-                    <form action="{% url 'name_handler' musician.name %}" method="POST">
-                        {% csrf_token %}
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>    
-            <tr>
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telephone number</th>
+            <th scope="col">Registered</th>
+            <th scope="col">Roles</th>
+            <th scope="col">Instruments</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    {% for musician in musician_list %}
+    <tr class="align-items-center">
+        <td scope="row">{{ musician.name }}</td>
+        <td>{{ musician.email }}</td>
+        <td>{{ musician.tel }}</td>
+        <td>
+            {% if musician.is_in_artiestenverloningen %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check"
+                viewBox="0 0 16 16">
+                <path
+                    d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+            </svg>
+            {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x"
+                viewBox="0 0 16 16">
+                <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+            {% endif %}
+        </td>
+
+        <td>{{ musician.roles.all|dictsort:"name"|join:", " }}</td>
+        <td>{{ musician.instrument.all|dictsort:"name"|join:", " }}</td>
+        <td>
+            <form action="{% url 'name_handler' musician.name %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
+        </td>
+    <tr>
         {% endfor %}
     </table>
+</div>
 {% else %}
 <p>Currently there are no musicians.</p>
 {% endif %}

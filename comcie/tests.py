@@ -1,5 +1,7 @@
 from django.test import TestCase
+
 from comcie.models import Role
+
 
 # Create your tests here.
 class RoleTests(TestCase):
